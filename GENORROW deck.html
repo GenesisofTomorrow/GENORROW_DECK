@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GENORROW — Investor Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #050507;
+    --deep: #08080d;
+    --gold: #C9A84C;
+    --gold-dim: #8A6B28;
+    --white: #F0EDE6;
+    --white-dim: #A8A49C;
+    --border: rgba(201,168,76,0.18);
+    --border-strong: rgba(201,168,76,0.4);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'EB Garamond', Georgia, serif;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* COPPERPLATE simulation via letter-spacing + font-variant */
+  .cp {
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', 'EB Garamond', Georgia, serif;
+    font-variant: small-caps;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+  }
+
+  /* ─── NOISE TEXTURE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.6;
+  }
+
+  /* ─── GRID LINES ─── */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+    background-size: 64px 64px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── SECTIONS ─── */
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 100%;
+    padding: 0;
+    position: relative;
+  }
+
+  .hero-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 80px 48px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 500px;
+    background: radial-gradient(ellipse at center, rgba(201,168,76,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    font-variant: small-caps;
+    font-family: 'EB Garamond', Georgia, serif;
+    margin-bottom: 20px;
+    opacity: 0.9;
+  }
+
+  .hero-title {
+    font-size: clamp(52px, 8vw, 96px);
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    color: var(--white);
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', 'EB Garamond', Georgia, serif;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .hero-title .gold { color: var(--gold); }
+  .hero-title .dim { color: rgba(240,237,230,0.35); }
+
+  .hero-tagline {
+    font-size: clamp(15px, 2vw, 20px);
+    color: var(--white-dim);
+    font-style: italic;
+    line-height: 1.5;
+    margin-top: 28px;
+    max-width: 620px;
+    border-left: 2px solid var(--gold-dim);
+    padding-left: 20px;
+  }
+
+  .hero-meta {
+    margin-top: 56px;
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat {
+    border-top: 1px solid var(--border-strong);
+    padding-top: 14px;
+    min-width: 140px;
+  }
+
+  .hero-stat .num {
+    font-size: 28px;
+    color: var(--gold);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-style: italic;
+    letter-spacing: 0.05em;
+    display: block;
+  }
+
+  .hero-stat .label {
+    font-size: 11px;
+    color: var(--white-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-variant: small-caps;
+    margin-top: 4px;
+    display: block;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+    margin: 80px auto;
+    max-width: 960px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .divider-label {
+    text-align: center;
+    margin: -10px auto 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .divider-label span {
+    background: var(--black);
+    padding: 0 20px;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--gold-dim);
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', Georgia, serif;
+  }
+
+  /* ─── SECTION HEADER ─── */
+  .sec-header {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+
+  .sec-num {
+    font-size: 11px;
+    color: var(--gold-dim);
+    letter-spacing: 0.3em;
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', Georgia, serif;
+    flex-shrink: 0;
+  }
+
+  .sec-title {
+    font-size: clamp(28px, 4vw, 44px);
+    color: var(--white);
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', 'EB Garamond', Georgia, serif;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    line-height: 1.1;
+  }
+
+  /* ─── THESIS ─── */
+  .thesis-body {
+    font-size: clamp(16px, 2vw, 20px);
+    line-height: 1.75;
+    color: var(--white-dim);
+    max-width: 800px;
+  }
+
+  .thesis-body strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .thesis-body em {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .thesis-body .cerulean { color: var(--gold); }
+
+  .pull-quote {
+    margin: 48px 0;
+    padding: 32px 40px;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    background: rgba(201,168,76,0.025);
+    position: relative;
+  }
+
+  .pull-quote::before {
+    content: '"';
+    position: absolute;
+    top: -20px;
+    left: 32px;
+    font-size: 80px;
+    color: var(--gold);
+    opacity: 0.3;
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+
+  .pull-quote p {
+    font-size: clamp(16px, 2.2vw, 22px);
+    line-height: 1.6;
+    font-style: italic;
+    color: var(--white);
+  }
+
+  /* ─── COMPARATOR ─── */
+  .comparator {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+    margin: 40px 0;
+    border: 1px solid var(--border);
+  }
+
+  .comp-item {
+    padding: 28px 24px;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+
+  .comp-item:last-child { border-right: none; }
+
+  .comp-item .co-name {
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', Georgia, serif;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .comp-item .co-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--white-dim);
+  }
+
+  .comp-item .co-plus {
+    position: absolute;
+    top: 50%;
+    right: -12px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: var(--gold-dim);
+    z-index: 2;
+    background: var(--black);
+    padding: 2px;
+  }
+
+  .comp-genesis {
+    margin-top: 2px;
+    background: rgba(201,168,76,0.04);
+    border: 1px solid var(--border-strong);
+    padding: 28px 24px;
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .comp-genesis .label {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--gold-dim);
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', Georgia, serif;
+    margin-bottom: 6px;
+  }
+
+  .comp-genesis .name {
+    font-size: 26px;
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', Georgia, serif;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+
+  .comp-genesis .desc {
+    font-size: 14px;
+    color: var(--white-dim);
+    max-width: 500px;
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  /* ─── RESEARCH PROJECTS ─── */
+  .projects-grid {
+    display: grid;
+    gap: 2px;
+  }
+
+  .project-card {
+    border: 1px solid var(--border);
+    padding: 36px 40px;
+    position: relative;
+    background: rgba(8,8,13,0.8);
+    transition: border-color 0.3s ease;
+  }
+
+  .project-card:hover {
+    border-color: var(--border-strong);
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold-dim), transparent);
+  }
+
+  .project-tag {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .project-tag .tag-num {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold-dim);
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', Georgia, serif;
+  }
+
+  .project-tag .tag-status {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    padding: 3px 10px;
+    border: 1px solid;
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', Georgia, serif;
+  }
+
+  .tag-published { border-color: var(--gold); color: var(--gold); }
+  .tag-submitted { border-color: var(--gold-dim); color: var(--gold); }
+  .tag-active { border-color: rgba(240,237,230,0.3); color: var(--white-dim); }
+
+  .project-name {
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', 'EB Garamond', Georgia, serif;
+    color: var(--white);
+    letter-spacing: 0.12em;
+    margin-bottom: 6px;
+  }
+
+  .project-full {
+    font-size: 12px;
+    color: var(--gold-dim);
+    letter-spacing: 0.08em;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .project-desc {
+    font-size: clamp(14px, 1.6vw, 17px);
+    line-height: 1.75;
+    color: var(--white-dim);
+    max-width: 780px;
+  }
+
+  .project-metrics {
+    display: flex;
+    gap: 32px;
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .proj-metric .m-val {
+    font-size: 20px;
+    color: var(--gold);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-style: italic;
+    letter-spacing: 0.02em;
+  }
+
+  .proj-metric .m-label {
+    font-size: 11px;
+    color: var(--white-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  /* ─── TIMELINE APPROACH ─── */
+  .timeline {
+    position: relative;
+    padding-left: 48px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(180deg, var(--gold), var(--gold-dim), transparent);
+  }
+
+  .tl-item {
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -52px;
+    top: 6px;
+    width: 8px;
+    height: 8px;
+    border: 1px solid var(--gold);
+    background: var(--black);
+    transform: rotate(45deg);
+  }
+
+  .tl-period {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', Georgia, serif;
+    margin-bottom: 8px;
+  }
+
+  .tl-title {
+    font-size: 18px;
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', Georgia, serif;
+    color: var(--white);
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  .tl-desc {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--white-dim);
+  }
+
+  /* ─── WHY NOW / INVESTMENT ─── */
+  .invest-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin: 40px 0;
+  }
+
+  .invest-item {
+    padding: 32px 28px;
+    border: 1px solid var(--border);
+    background: rgba(8,8,13,0.6);
+  }
+
+  .invest-item .i-icon {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold-dim);
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', Georgia, serif;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .invest-item .i-title {
+    font-size: 17px;
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', Georgia, serif;
+    color: var(--white);
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+
+  .invest-item .i-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--white-dim);
+  }
+
+  /* ─── VALIDATION BAR ─── */
+  .validation-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--border-strong);
+    background: rgba(201,168,76,0.02);
+    margin: 40px 0;
+  }
+
+  .val-item {
+    padding: 28px 24px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .val-item:last-child { border-right: none; }
+
+  .val-item .v-num {
+    font-size: clamp(24px, 3.5vw, 36px);
+    color: var(--gold);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-style: italic;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .val-item .v-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--white-dim);
+    text-transform: uppercase;
+    font-variant: small-caps;
+  }
+
+  .val-item .v-sub {
+    font-size: 12px;
+    color: var(--gold-dim);
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  /* ─── FOOTER / CTA ─── */
+  #cta {
+    max-width: 100%;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 80px 48px 100px;
+  }
+
+  .cta-box {
+    border: 1px solid var(--border-strong);
+    padding: 60px 56px;
+    position: relative;
+    background: rgba(201,168,76,0.02);
+    text-align: center;
+  }
+
+  .cta-box::before, .cta-box::after {
+    content: '◆';
+    position: absolute;
+    font-size: 10px;
+    color: var(--gold);
+  }
+
+  .cta-box::before { top: 16px; left: 20px; }
+  .cta-box::after { bottom: 16px; right: 20px; }
+
+  .cta-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--gold-dim);
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', Georgia, serif;
+    margin-bottom: 24px;
+  }
+
+  .cta-headline {
+    font-size: clamp(28px, 4vw, 48px);
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', 'EB Garamond', Georgia, serif;
+    color: var(--white);
+    letter-spacing: 0.08em;
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+
+  .cta-headline .gold { color: var(--gold); }
+
+  .cta-body {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--white-dim);
+    max-width: 600px;
+    margin: 0 auto 40px;
+    font-style: italic;
+  }
+
+  .links-row {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+
+  .link-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .link-item a {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-decoration: none;
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', Georgia, serif;
+    border-bottom: 1px solid var(--gold-dim);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .link-item a:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .link-item .ltype {
+    font-size: 9px;
+    color: var(--white-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .contact-line {
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--white-dim);
+  }
+
+  .contact-line a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  /* ─── CREW SECTION ─── */
+  .crew-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .crew-card {
+    border: 1px solid var(--border);
+    padding: 40px 44px;
+    background: rgba(8,8,13,0.8);
+    position: relative;
+    transition: border-color 0.3s ease;
+  }
+
+  .crew-card:hover { border-color: var(--border-strong); }
+
+  .crew-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold-dim), transparent);
+  }
+
+  .crew-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .crew-identity {}
+
+  .crew-name {
+    font-size: clamp(20px, 2.8vw, 28px);
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', 'EB Garamond', Georgia, serif;
+    color: var(--white);
+    letter-spacing: 0.1em;
+    margin-bottom: 5px;
+  }
+
+  .crew-role {
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    color: var(--gold);
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', Georgia, serif;
+  }
+
+  .crew-linkedin {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    color: var(--gold-dim);
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', Georgia, serif;
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold-dim);
+    padding-bottom: 1px;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+
+  .crew-linkedin:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .crew-divider {
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 24px;
+  }
+
+  .crew-points {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 40px;
+  }
+
+  @media (max-width: 640px) {
+    .crew-points { grid-template-columns: 1fr; }
+    .crew-card { padding: 28px 24px; }
+  }
+
+  .crew-points li {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--white-dim);
+    padding-left: 18px;
+    position: relative;
+  }
+
+  .crew-points li::before {
+    content: '◆';
+    position: absolute;
+    left: 0;
+    top: 4px;
+    font-size: 6px;
+    color: var(--gold-dim);
+  }
+
+  .crew-points li strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  /* ─── NAV BAR ─── */
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 48px;
+    background: rgba(5,5,7,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .topbar-logo {
+    font-size: 14px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', Georgia, serif;
+  }
+
+  .topbar-right {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--white-dim);
+    font-variant: small-caps;
+    font-family: 'Copperplate Gothic Bold', 'Copperplate', Georgia, serif;
+  }
+
+  /* ─── SCROLL ANIMATIONS ─── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 720px) {
+    section, .hero-inner, .cta-inner { padding: 0 24px; }
+    .topbar { padding: 14px 24px; }
+    .comparator { grid-template-columns: 1fr; }
+    .invest-grid { grid-template-columns: 1fr; }
+    .validation-bar { grid-template-columns: 1fr; }
+    .hero-meta { gap: 24px; }
+    .links-row { gap: 16px; }
+    .cta-box { padding: 40px 28px; }
+    .project-card { padding: 28px 24px; }
+    .comp-genesis { flex-direction: column; gap: 16px; }
+  }
+
+  /* ─── SECTION PADDING ─── */
+  .sec-wrap {
+    padding-top: 80px;
+    padding-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-logo">GENORROW</div>
+  <div class="topbar-right">GENORROW · R&D Brief</div>
+</div>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner" style="padding-top: 140px;">
+    <div class="hero-eyebrow">Genesis of Tomorrow · R&D Brief · 2025</div>
+
+    <h1 class="hero-title">
+      <span class="gold">GENORROW</span>
+    </h1>
+
+    <p class="hero-tagline">
+      Quantum-Enabled Governance &amp; Security for Autonomous AI —
+      at the intersection of physics, cryptography, and machine intelligence.
+    </p>
+
+    <div class="hero-meta">
+      <div class="hero-stat">
+        <span class="num">1</span>
+        <span class="label">Springer Nature Publication</span>
+      </div>
+      <div class="hero-stat">
+        <span class="num">2</span>
+        <span class="label">NeurIPS Submissions</span>
+      </div>
+      <div class="hero-stat">
+        <span class="num">3</span>
+        <span class="label">Active Research Projects</span>
+      </div>
+      <div class="hero-stat">
+        <span class="num">10yr</span>
+        <span class="label">R&D Horizon</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"><div class="divider-label"><span>I · The Thesis</span></div>
+
+<!-- THESIS -->
+<section class="sec-wrap fade-up">
+  <div class="sec-header">
+    <span class="sec-num">01 —</span>
+    <h2 class="sec-title">The Problem We Own</h2>
+  </div>
+
+  <p class="thesis-body">
+    Autonomous AI systems are being deployed into <strong>critical environments</strong> — defense, aerospace, contested networks — with a foundational unresolved question at their core: <em>how do you verify the identity and output integrity of an agent that is, by design, non-deterministic?</em>
+  </p>
+
+  <div class="pull-quote">
+    <p>The black-box nature of autonomous AI in high-uncertainty, mission-critical environments introduces a terminal trust gap. We work the R&D at this junction — constructing quantum-hybrid frameworks that can be directly implemented into existing critical pipelines.</p>
+  </div>
+
+  <p class="thesis-body">
+    Classical cryptographic methods — no matter how sophisticated — are <strong>predicated on computational hardness assumptions</strong> that are increasingly fragile against quantum adversaries. Grover's algorithm reduces 256-bit hash security to 128-bit equivalence. Shor's dissolves RSA and ECC entirely. The timeline is not theoretical. <em>The horizon may have already arrived.</em>
+  </p>
+
+  <br><br>
+
+  <p class="thesis-body">
+    GENORROW's answer is not to patch the classical paradigm. It is to <strong class="cerulean">replace the foundation</strong> — using quantum mechanics itself as the source of security. Unpredictability grounded in physical indeterminacy, not computational limitation.
+  </p>
+</section>
+
+<hr class="divider"><div class="divider-label"><span>II · The Company</span></div>
+
+<!-- WHAT WE ARE -->
+<section class="sec-wrap fade-up">
+  <div class="sec-header">
+    <span class="sec-num">02 —</span>
+    <h2 class="sec-title">What GENORROW Is</h2>
+  </div>
+
+  <p class="thesis-body" style="margin-bottom: 40px;">
+    A full-fledged deep-tech R&D company. Not a services firm. Not a SaaS wrapper. Not an AI product studio. <strong>Research is our product. Translation is our mission.</strong> We operate on a decade-scale R&D horizon — analogous to OpenAI's trajectory in its founding years, where the product takes time because the science demands it.
+  </p>
+
+  <div class="comparator">
+    <div class="comp-item">
+      <span class="co-name">Palantir</span>
+      <p class="co-desc">Mission-critical data infrastructure and decision intelligence for defense and enterprise.</p>
+      <span class="co-plus">+</span>
+    </div>
+    <div class="comp-item">
+      <span class="co-name">DeepMind</span>
+      <p class="co-desc">Foundational AI research pursued with scientific rigour and long-horizon conviction.</p>
+      <span class="co-plus">+</span>
+    </div>
+    <div class="comp-item">
+      <span class="co-name">OpenAI / Anthropic</span>
+      <p class="co-desc">AI safety and capability research built as a civilisational mission, not a product sprint.</p>
+    </div>
+    <div class="comp-genesis">
+      <div>
+        <div class="label">The Indian Equivalent Of</div>
+        <div class="name">GENORROW</div>
+      </div>
+      <p class="desc">The intersection of all three — applied to the singular unsolved problem of Quantum-Enabled Governance for Autonomous AI, with mathematical and physical guarantees as the deliverable.</p>
+    </div>
+  </div>
+
+  <div class="invest-grid" style="margin-top: 40px;">
+    <div class="invest-item">
+      <span class="i-icon">Positioning</span>
+      <div class="i-title">India's Deep-Tech Sovereign</div>
+      <p class="i-desc">Operating at a junction no Indian institution currently occupies — quantum cryptography applied to autonomous AI governance in defense and critical infrastructure.</p>
+    </div>
+    <div class="invest-item">
+      <span class="i-icon">Model</span>
+      <div class="i-title">Long-Horizon, Non-Dilutive R&D</div>
+      <p class="i-desc">No quick-buck SaaS. No AI wrappers. The longer the investment horizon, the more stable and exponential the returns, as the market matures into our technical position.</p>
+    </div>
+    <div class="invest-item">
+      <span class="i-icon">Moat</span>
+      <div class="i-title">Peer-Reviewed Architecture IP</div>
+      <p class="i-desc">Core architectures published in Springer Nature and submitted to NeurIPS — establishing scientific precedent and defensible IP at the foundational level.</p>
+    </div>
+    <div class="invest-item">
+      <span class="i-icon">Inevitability</span>
+      <div class="i-title">A Market That Must Exist</div>
+      <p class="i-desc">As quantum advantage arrives and autonomous AI scales into defense, the demand for what we build becomes non-optional. The question is only who is positioned to deliver it.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"><div class="divider-label"><span>III · The Research</span></div>
+
+<!-- PROJECTS -->
+<section class="sec-wrap fade-up">
+  <div class="sec-header">
+    <span class="sec-num">03 —</span>
+    <h2 class="sec-title">Active Research Projects</h2>
+  </div>
+
+  <div class="projects-grid">
+
+    <!-- MARK-B.L.U. -->
+    <div class="project-card">
+      <div class="project-tag">
+        <span class="tag-num">Project I</span>
+        <span class="tag-status tag-published">Springer Nature · Published</span>
+      </div>
+      <div class="project-name">MARK-B.L.U.</div>
+      <div class="project-full">Base Layer Unification — Quantum Hash Function Framework for Agent Identity &amp; Output Verification</div>
+      <p class="project-desc">
+        A dynamically evolving quantum security architecture designed for autonomous AI in defense and critical infrastructure. The system generates <em>quantum-native cryptographic identity signatures</em> that shapeshift with each timeslot — making autonomous agent identity as ephemeral as a wavefunction, and as verifiable as a law of physics.
+        <br><br>
+        The architecture operates through a 16-qubit, 6-layer parameterized quantum circuit with brick-wall CNOT entanglement, SHA-512 pre-stretching, and SHAKE-256 amplitude extraction — achieving a 256-bit quantum hash digest. Empirically validated against entropy, collision resistance, avalanche effect, bit independence, and Hamming distance benchmarks — placing it in quantitative competition with production-grade classical hash functions.
+      </p>
+      <div class="project-metrics">
+        <div class="proj-metric">
+          <div class="m-val">99.86%</div>
+          <div class="m-label">Pooled Entropy Retention</div>
+        </div>
+        <div class="proj-metric">
+          <div class="m-val">0</div>
+          <div class="m-label">Collisions / 1,000 runs</div>
+        </div>
+        <div class="proj-metric">
+          <div class="m-val">49.6%</div>
+          <div class="m-label">Avalanche Flip Rate (ideal: 50%)</div>
+        </div>
+        <div class="proj-metric">
+          <div class="m-val">NISQ</div>
+          <div class="m-label">Compatible · Deployable Today</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAST-QAFTROM-X -->
+    <div class="project-card" style="margin-top: 2px;">
+      <div class="project-tag">
+        <span class="tag-num">Project II</span>
+        <span class="tag-status tag-submitted">NeurIPS 2026 · Submitted</span>
+      </div>
+      <div class="project-name">PAST-QAFTROM-X</div>
+      <div class="project-full">Phase-Structured Quantum Fourier Transform with Optimised Modulation &amp; eXpressiveness</div>
+      <p class="project-desc">
+        A quantum kernel learning architecture that resolves three simultaneous pathologies of existing quantum feature maps: degenerate expressiveness, exponential gradient vanishing (barren plateaus), and the absence of principled task-adaptive kernel optimisation.
+        <br><br>
+        A single trainable diagonal phase operator inserted before the Quantum Fourier Transform yields N real learnable parameters — provably avoiding barren plateaus with gradient magnitude scaling as Ω(N⁻¹/²) (polynomial, not exponential). At N=2¹⁶, PAST-QAFTROM-X gradients are 14 million times larger than generic parameterised quantum circuit baselines, which become completely untrainable at that scale.
+      </p>
+      <div class="project-metrics">
+        <div class="proj-metric">
+          <div class="m-val">+13.3%</div>
+          <div class="m-label">vs. Random Fourier Features</div>
+        </div>
+        <div class="proj-metric">
+          <div class="m-val">14M×</div>
+          <div class="m-label">Gradient Advantage at N=2¹⁶</div>
+        </div>
+        <div class="proj-metric">
+          <div class="m-val">0.94N</div>
+          <div class="m-label">Gram Matrix Effective Rank</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QALRON -->
+    <div class="project-card" style="margin-top: 2px; border-color: rgba(201,168,76,0.3);">
+      <div class="project-tag">
+        <span class="tag-num">Project III · Flagship Product</span>
+        <span class="tag-status tag-active">In Development</span>
+      </div>
+      <div class="project-name">QALRON</div>
+      <div class="project-full">The First Full-Fledged Product — Quantum-AI Governance Layer for Autonomous Systems</div>
+      <p class="project-desc">
+        The eventual product synthesis of GENORROW's research portfolio. QALRON is the architectural culmination of the MARK-B.L.U. hashing core and PAST-QAFTROM-X kernel framework — built as a deployable quantum-AI governance layer for autonomous systems in high-stakes, zero-trust environments.
+        <br><br>
+        Designed for defense, aerospace, and critical AI infrastructure. QALRON will provide tamper-proof command chain verification, quantum-verifiable output logs, and dynamic identity governance for autonomous agent clusters — securing the full operational loop from instruction to execution to audit.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider"><div class="divider-label"><span>IV · Validation</span></div>
+
+<!-- TRACTION -->
+<section class="sec-wrap fade-up">
+  <div class="sec-header">
+    <span class="sec-num">04 —</span>
+    <h2 class="sec-title">Scientific Validation</h2>
+  </div>
+
+  <div class="validation-bar">
+    <div class="val-item">
+      <span class="v-num">1</span>
+      <div class="v-label">Springer Nature</div>
+      <div class="v-sub">Accepted & Published</div>
+    </div>
+    <div class="val-item">
+      <span class="v-num">2</span>
+      <div class="v-label">NeurIPS 2026</div>
+      <div class="v-sub">Submissions in Review</div>
+    </div>
+    <div class="val-item">
+      <span class="v-num">Open</span>
+      <div class="v-label">Source Architecture</div>
+      <div class="v-sub">Reproducible · github.com/GENORROW</div>
+    </div>
+  </div>
+
+  <p class="thesis-body" style="margin-top: 32px;">
+    Every architecture published carries a full open-source implementation — reproducible, modular, and peer-reviewed. This is not vaporware. The mathematics are proven. The code runs. The benchmarks hold against production-grade classical equivalents. <strong>The science is the moat.</strong>
+  </p>
+</section>
+
+<hr class="divider"><div class="divider-label"><span>V · The Horizon</span></div>
+
+<!-- ROADMAP -->
+<section class="sec-wrap fade-up">
+  <div class="sec-header">
+    <span class="sec-num">05 —</span>
+    <h2 class="sec-title">The Decade Ahead</h2>
+  </div>
+
+  <p class="thesis-body" style="margin-bottom: 48px;">
+    This is not a company built for a Series A exit in 36 months. GENORROW is built on the OpenAI model — where the first decade is foundational science, and the subsequent returns are civilisational. The investor who understands this is not buying a product. <em>They are buying a position in the architecture of a quantum-AI future.</em>
+  </p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-period">Now · 2025–2026</div>
+      <div class="tl-title">Foundational Science & IP Establishment</div>
+      <p class="tl-desc">Springer Nature publication secured. NeurIPS submissions in review. MARK-B.L.U. and PAST-QAFTROM-X architectures proven mathematically and empirically. Open-source baselines established for the research community.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-period">Near-Term · 2026–2028</div>
+      <div class="tl-title">Architecture Deepening & QALRON Development</div>
+      <p class="tl-desc">MARK-B.L.U. APEX iteration. PAST-QAFTROM-X multi-layer extensions. QALRON system integration begins. Defense and aerospace pilot discussions. Continued publication in top-tier venues — NeurIPS, ICML, Nature Quantum Information.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-period">Mid-Term · 2028–2032</div>
+      <div class="tl-title">Hardware Transition & Sovereign Deployments</div>
+      <p class="tl-desc">As quantum hardware matures toward fault-tolerant operation, GENORROW's architectures — already designed for NISQ compatibility — transition to real quantum backends. First sovereign deployments in defense-grade autonomous AI pipelines.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-period">Long-Term · 2032+</div>
+      <div class="tl-title">Quantum-AI Governance Infrastructure</div>
+      <p class="tl-desc">GENORROW as the foundational security and governance layer for autonomous AI across defense, aerospace, finance, and critical national infrastructure. The longer the investment horizon — the more irreplaceable the position.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"><div class="divider-label"><span>VI · The Opportunity</span></div>
+
+<!-- WHY NOW -->
+<section class="sec-wrap fade-up">
+  <div class="sec-header">
+    <span class="sec-num">06 —</span>
+    <h2 class="sec-title">Why This. Why Now.</h2>
+  </div>
+
+  <div class="invest-grid">
+    <div class="invest-item">
+      <span class="i-icon">The Market Signal</span>
+      <div class="i-title">Autonomous AI Is Already Deployed</div>
+      <p class="i-desc">Drones, robots, cyber-physical systems, and autonomous decision engines are operating today in contested environments. The governance layer is missing. The need is not future-facing — it is present and urgent.</p>
+    </div>
+    <div class="invest-item">
+      <span class="i-icon">The Threat Horizon</span>
+      <div class="i-title">Classical Security Is Expiring</div>
+      <p class="i-desc">Grover's algorithm. Shor's algorithm. The cryptographic foundations of existing identity systems have a known end-date. GENORROW builds the replacement — not a patch, the foundation.</p>
+    </div>
+    <div class="invest-item">
+      <span class="i-icon">The India Opportunity</span>
+      <div class="i-title">No Incumbent At This Intersection</div>
+      <p class="i-desc">No Indian institution currently occupies the junction of quantum cryptography + autonomous AI governance + defense applicability. First-mover at this intersection is a structural advantage that compounds over a decade.</p>
+    </div>
+    <div class="invest-item">
+      <span class="i-icon">The Investment Profile</span>
+      <div class="i-title">Non-Zero-Sum, Exponential Returns</div>
+      <p class="i-desc">The longer the investment runway, the more defensible and dominant the position becomes. This is not a bet on a product. It is a bet on the inevitability of the market — and on being there first with proven science.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"><div class="divider-label"><span>VII · The Crew</span></div>
+
+<!-- CREW -->
+<section class="sec-wrap fade-up">
+  <div class="sec-header">
+    <span class="sec-num">07 —</span>
+    <h2 class="sec-title">The Crew</h2>
+  </div>
+
+  <div class="crew-grid">
+
+    <!-- BHAVYADHIRR -->
+    <div class="crew-card">
+      <div class="crew-top">
+        <div class="crew-identity">
+          <div class="crew-name">Bhavyadhirr V. Bharadwaj</div>
+          <div class="crew-role">Founder · CEO · Lead Research Engineer</div>
+        </div>
+        <a class="crew-linkedin" href="https://linkedin.com/in/Bhavyadhirr" target="_blank">linkedin.com/in/Bhavyadhirr ↗</a>
+      </div>
+      <div class="crew-divider"></div>
+      <ul class="crew-points">
+        <li>Sole architect of <strong>MARK-B.L.U.</strong> — the quantum hashing framework published in Springer Nature; conceived, designed, and built the full architecture end-to-end</li>
+        <li>Principal author of <strong>PAST-QAFTROM-X</strong>, the phase-structured quantum kernel learning system under NeurIPS 2026 review</li>
+        <li>Conceived and leads <strong>QALRON</strong>, GENORROW's flagship quantum-AI governance product in active development</li>
+        <li>Founded GENORROW with a decade-scale R&D mandate — the company's scientific vision, architecture choices, and research direction are his</li>
+        <li>Research spans quantum cryptography, parameterized quantum circuits, autonomous AI governance, and barren-plateau-free kernel learning</li>
+        <li>Positioned GENORROW as India's first R&D company at the intersection of quantum security and autonomous AI governance for defense</li>
+      </ul>
+    </div>
+
+    <!-- HARSHVARDHAN -->
+    <div class="crew-card" style="margin-top: 2px;">
+      <div class="crew-top">
+        <div class="crew-identity">
+          <div class="crew-name">Harshvardhan Bhosale</div>
+          <div class="crew-role">CTO · Chief Technology Officer</div>
+        </div>
+        <a class="crew-linkedin" href="https://www.linkedin.com/in/harshvardhan-bhosale-07a98b274/" target="_blank">linkedin.com/in/harshvardhan-bhosale ↗</a>
+      </div>
+      <div class="crew-divider"></div>
+      <ul class="crew-points">
+        <li>Engineering student at <strong>Pune Institute of Computer Technology</strong> — CGPA 9.38/10 across Electronics, Computer Networks, AI/ML, and Cybersecurity</li>
+        <li><strong>National Finalist, Smart India Hackathon 2024</strong> — Team Lead, ranked Top 5 of 300+ competing teams nationwide</li>
+        <li>Winner, <strong>PICT INC 2025</strong> — recognised for a solution with strong market deployment potential</li>
+        <li>Developed a <strong>patent-pending Data Wiping Solution</strong> — cross-platform enterprise-grade data security and compliance architecture</li>
+        <li>Built <strong>DhruvTara</strong>, an AI help-bot for ISRO MOSDAC — leveraging LangChain, vector databases, and NLP for structured query automation</li>
+        <li><strong>AIR 71, Pentathon CTF</strong> — national cybersecurity challenge; trained under Google Cybersecurity Professional Certificate and McKinsey Forward Program</li>
+        <li>Co-author of the Agent Badge Rotation Mechanism within MARK-B.L.U. 1.0; authored the first manuscript draft of its background section</li>
+      </ul>
+    </div>
+
+    <!-- ADWAITHA -->
+    <div class="crew-card" style="margin-top: 2px;">
+      <div class="crew-top">
+        <div class="crew-identity">
+          <div class="crew-name">Adwaitha V</div>
+          <div class="crew-role">Director of R&D</div>
+        </div>
+        <a class="crew-linkedin" href="https://www.linkedin.com/in/adwaitha-v-4b1452289/" target="_blank">linkedin.com/in/adwaitha-v ↗</a>
+      </div>
+      <div class="crew-divider"></div>
+      <ul class="crew-points">
+        <li>Selected for <strong>IBM Qiskit Global Summer School</strong>, QWorld QBronze, and QClass — foundational credentialing across global quantum computing programmes</li>
+        <li><strong>Lead Organiser, Qiskit Fall Fest</strong> — IBM-supported global quantum tech event; led speaker outreach, curriculum design, logistics, and student engagement</li>
+        <li><strong>Core Committee Member, Robotics Club, Amrita</strong> — leading interdisciplinary projects in embedded systems, autonomy, ROS, and AI-integrated robotics</li>
+        <li>Participant in <strong>Live-in-Labs®</strong>, Amrita Vishwa Vidyapeetham — field research in Chhattisgarh rural communities; co-developed technology-based affordable solutions on the ground</li>
+        <li>Active research in <strong>quantum computing frameworks</strong> and AI for environmental sustainability — papers under development</li>
+        <li><strong>Hackathon winner</strong>, Road Safety Innovation — led end-to-end product conceptualisation, market and competitor analysis, and working prototype design</li>
+        <li>Cybersecurity intern at <strong>1stop.ai</strong> — built an information-gathering security tool; hands-on systems engineering and secure software development</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CTA -->
+<div id="cta">
+  <div class="cta-inner">
+    <div class="cta-box fade-up">
+      <div class="cta-eyebrow">Reach Out · Begin the Conversation</div>
+      <h2 class="cta-headline">
+        Building the Security Layer<br>
+        for a <span class="gold">Quantum-Native World</span>
+      </h2>
+      <p class="cta-body">
+        We are not looking for capital to launch a product next quarter. We are looking for partners who understand that the most consequential R&D companies are built on decade-scale conviction — and that the returns are proportional.
+      </p>
+
+      <div class="links-row">
+        <div class="link-item">
+          <a href="https://www.genorrow.com" target="_blank">genorrow.com</a>
+          <span class="ltype">Website</span>
+        </div>
+        <div class="link-item">
+          <a href="https://www.linkedin.com/company/genorrow/" target="_blank">LinkedIn · GENORROW</a>
+          <span class="ltype">Company</span>
+        </div>
+        <div class="link-item">
+          <a href="https://www.linkedin.com/in/Bhavyadhirr/" target="_blank">Bhavyadhirr · Founder</a>
+          <span class="ltype">CEO & Founder</span>
+        </div>
+        <div class="link-item">
+          <a href="https://github.com/GENORROW/MARK-B.L.U." target="_blank">github.com/GENORROW</a>
+          <span class="ltype">Open Source</span>
+        </div>
+        <div class="link-item">
+          <a href="https://www.youtube.com/@GenesisofTomorrow/" target="_blank">YouTube</a>
+          <span class="ltype">Genesis of Tomorrow</span>
+        </div>
+      </div>
+
+      <div class="contact-line">
+        Direct: <a href="mailto:enterprises@genorrow.com">enterprises@genorrow.com</a>
+        &nbsp;·&nbsp;
+        GENORROW, India
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top: 40px;">
+      <p style="font-size: 11px; letter-spacing: 0.2em; color: var(--white-dim); font-variant: small-caps; font-family: 'Copperplate Gothic Bold', Georgia, serif;">
+        For Humanity · GENORROW © 2025
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Scroll-triggered fade-up
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
